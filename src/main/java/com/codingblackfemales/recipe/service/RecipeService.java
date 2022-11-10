@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RecipeService {
@@ -72,6 +73,24 @@ public class RecipeService {
         }
 
         recipeDAO.updateRecipe(id, update);
+    }
+
+    public List<Recipe> getRecipeByName(String name) {
+        List<Recipe> chosenRecipe = recipeDAO.getRecipeByName(name);
+        if(chosenRecipe == null ) {
+            throw new IllegalStateException("Recipe with name " + name + " not found");
+        }else {
+            return chosenRecipe;
+        }
+    }
+
+    public Set<Recipe> getRecipeByIngredientName(String ingredientName) {
+        Set<Recipe> chosenRecipe = recipeDAO.getRecipeByIngredientName(ingredientName);
+        if(chosenRecipe == null ) {
+            throw new IllegalStateException("Recipe with name " + ingredientName + " not found");
+        }else {
+            return chosenRecipe;
+        }
     }
 }
 

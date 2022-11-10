@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/recipes")
@@ -43,5 +44,17 @@ public class RecipeController {
     @ResponseStatus(HttpStatus.OK)
     public Recipe getRecipeById(@PathVariable("id") Integer id) {
         return recipeService.getRecipeById(id);
+    }
+
+    @GetMapping("name/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Recipe> getRecipeByName(@PathVariable("name") String name) {
+        return recipeService.getRecipeByName(name);
+    }
+
+    @GetMapping("ingredient/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<Recipe> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
+        return recipeService.getRecipeByIngredientName(ingredientName);
     }
 }

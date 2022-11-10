@@ -32,40 +32,79 @@ public class Recipe {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
     public List<Ingredient> getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(List<Ingredient> ingredient) {
-        this.ingredient = ingredient;
-    }
+//    public void setIngredient(List<Ingredient> ingredient) {
+//        this.ingredient = ingredient;
+//    }
 
     public String getInstruction() {
         return instruction;
     }
 
-    public void setInstruction(String instruction) {
-        this.instruction = instruction;
-    }
+//    public void setInstruction(String instruction) {
+//        this.instruction = instruction;
+//    }
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+//    public void setUrl(String url) {
+//        this.url = url;
+//    }
+
+    public static class Builder {
+        private Integer id;
+        private String name;
+        private List<Ingredient> ingredient;
+        private String instruction;
+        private String url;
+
+        public Builder(){}
+
+        public Builder setId(Integer id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setIngredient(List<Ingredient> ingredient) {
+            this.ingredient = ingredient;
+            return this;
+        }
+
+        public Builder setInstruction(String instruction) {
+            this.instruction = instruction;
+            return this;
+        }
+
+        public Builder setUrl(String url) {
+            this.url = url;
+            return this;
+        }
+
+        public Recipe build(){
+            return new Recipe(id, name, ingredient, instruction, url);
+        }
     }
 
     @Override
