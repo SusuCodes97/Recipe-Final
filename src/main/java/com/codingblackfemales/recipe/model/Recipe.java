@@ -32,41 +32,21 @@ public class Recipe {
         return id;
     }
 
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
-
     public String getName() {
         return name;
     }
-
-//    public void setName(String name) {
-//        this.name = name;
-//    }
 
     public List<Ingredient> getIngredient() {
         return ingredient;
     }
 
-//    public void setIngredient(List<Ingredient> ingredient) {
-//        this.ingredient = ingredient;
-//    }
-
     public String getInstruction() {
         return instruction;
     }
 
-//    public void setInstruction(String instruction) {
-//        this.instruction = instruction;
-//    }
-
     public String getUrl() {
         return url;
     }
-
-//    public void setUrl(String url) {
-//        this.url = url;
-//    }
 
     public static class Builder {
         private Integer id;
