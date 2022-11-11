@@ -1,58 +1,57 @@
 package com.codingblackfemales.recipe.service;
 
 import com.codingblackfemales.recipe.model.Recipe;
-import com.codingblackfemales.recipe.repository.RecipeDAO;
+import com.codingblackfemales.recipe.repository.DatabaseRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @Service
 public class RecipeService {
 
-    private RecipeDAO recipeDAO;
+    private DatabaseRepository databaseRepository;
 
-    public RecipeService(@Qualifier("local") RecipeDAO recipeDAO) {
-        this.recipeDAO = recipeDAO;
+    public RecipeService(@Qualifier("database") DatabaseRepository databaseRepository) {
+        this.databaseRepository = databaseRepository;
     }
 
-    public Recipe getRecipeById(Integer id) {
+    public Optional<Recipe> getRecipeById(Integer id) {
         if (id == null) {
             throw new IllegalStateException("ID Cannot be null");
         }
-        Recipe chosenRecipe = recipeDAO.getRecipeById(id);
-        if(chosenRecipe == null ) {
+        boolean chosenRecipe = databaseRepository.existsById(id);
+        if(!chosenRecipe) {
             throw new IllegalStateException("Recipe with id " + id + " not found");
         }else {
-            return chosenRecipe;
+            return databaseRepository.findById(id);
         }
     }
 
     public List<Recipe> getAllRecipes() {
-        return recipeDAO.getAllRecipes();
+        return databaseRepository.findAll();
     }
 
-    //is there a way to prevent the same recipe (ignoring id) being added?
     public void postRecipe(Recipe recipe) {
         if(recipe.getInstruction() == null || recipe.getIngredient() == null || recipe.getName() == null) {
             throw  new IllegalStateException("Fields cannot be empty");
         }
-        Recipe checkIfRecipeExists = recipeDAO.getRecipeById(recipe.getId());
+        boolean recipeExists = databaseRepository.existsById(recipe.getId());
 
-        if (checkIfRecipeExists != null ){
+        if (recipeExists){
             throw  new IllegalStateException("Recipe with id " + recipe.getId() + " already exists. Cannot register with the same id");
         }
-        recipeDAO.postRecipe(recipe);
+        databaseRepository.save(recipe);
     }
 
     public void deleteById(Integer id) {
-        Recipe recipeToRemove = recipeDAO.getRecipeById(id);
+        boolean recipeExists = databaseRepository.existsById(id);
         System.out.println("deleted from service");
-        if (recipeToRemove == null){
-            throw  new IllegalStateException("Recipe with id " + id + " does not exist. Cannot remove a recipe which does not exist");
+        if (!recipeExists){
+            throw  new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
         }
-        recipeDAO.deleteRecipe(id);
+        databaseRepository.deleteById(id);
     }
 
     public void updateRecipe(Integer id, Recipe update) {
@@ -67,42 +66,29 @@ public class RecipeService {
             throw new IllegalStateException("Instructions cannot be null");
         }
 
-        Recipe recipeToUpdate = recipeDAO.getRecipeById(id);
+        Optional<Recipe> recipeToUpdate = databaseRepository.findById(id);
 
         if (recipeToUpdate == null) {
             throw new IllegalStateException("Id is not found");
         }
 
-        recipeDAO.updateRecipe(id, update);
+        Recipe recipe = recipeToUpdate.get();
+        recipe.setId(id);
+        recipe.setName(update.getName());
+        recipe.setIngredient(update.getIngredient());
+        recipe.setInstruction(update.getInstruction());
+        recipe.setUrl(update.getUrl());
+
+        databaseRepository.save(recipe);
+
+//        databaseRepository.deleteById(id);
+//        update.setId(id);
+//        Recipe update2 = new Recipe(id, update.getName(), update.getIngredient(), update.getInstruction(), update.getUrl());
+//        databaseRepository.save(update2);
     }
 
-    public List<Recipe> getRecipeByName(String name) {
-        List<Recipe> chosenRecipe = recipeDAO.getRecipeByName(name);
-        if(chosenRecipe == null ) {
-            throw new IllegalStateException("Recipe with name " + name + " not found");
-        }else {
-            return chosenRecipe;
-        }
+    public List<Recipe> getByName(String name){
+        return databaseRepository.getByName(name);
     }
 
-    public Set<Recipe> getRecipeByIngredientName(String ingredientName) {
-        Set<Recipe> chosenRecipe = recipeDAO.getRecipeByIngredientName(ingredientName);
-        if(chosenRecipe == null ) {
-            throw new IllegalStateException("Recipe with name " + ingredientName + " not found");
-        }else {
-            return chosenRecipe;
-        }
-    }
 }
-
-//is there a way to make the id automated
-//problem with instruction when using jpa
-//how to implement JSON objects into this
-//does this use encapsulation/SOLID?
-//WHICH DESIGN PATTERN SHOULD I IMPLEMENT??!?!?!?
-
-
-//implememted oop, method overriding (interface), access modifiers, encapsulation!... can potentially implement inheritance?
-// can polymorphism work with interfaces?
-//implemented abstraction through the use of interface
-//maven github

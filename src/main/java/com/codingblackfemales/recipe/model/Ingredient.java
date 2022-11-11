@@ -1,9 +1,25 @@
 package com.codingblackfemales.recipe.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Objects;
 
+@Data
+//@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Embeddable
 public class Ingredient {
+    @Column
     private String name;
+    @Column
     private double quantity;
 
     public Ingredient(String name, double quantity) {

@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/recipes")
@@ -42,19 +43,16 @@ public class RecipeController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Recipe getRecipeById(@PathVariable("id") Integer id) {
+    public Optional<Recipe> getRecipeById(@PathVariable("id") Integer id) {
         return recipeService.getRecipeById(id);
     }
 
-    @GetMapping("name/{name}")
+    @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Recipe> getRecipeByName(@PathVariable("name") String name) {
-        return recipeService.getRecipeByName(name);
+    public List<Recipe> getByName(@PathVariable("name") String name) {
+        //THIS WORKS BUT GET RID OF CAPITALS//cases
+        return recipeService.getByName(name);
     }
 
-    @GetMapping("ingredient/{name}")
-    @ResponseStatus(HttpStatus.OK)
-    public Set<Recipe> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
-        return recipeService.getRecipeByIngredientName(ingredientName);
-    }
+
 }
