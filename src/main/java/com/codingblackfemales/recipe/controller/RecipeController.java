@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/recipes")
@@ -55,4 +56,10 @@ public class RecipeController {
     }
 
 
+//    @GetMapping("/ingredient/{name}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Set<Recipe> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
+//        //THIS WORKS BUT GET RID OF CAPITALS//cases
+//        return recipeService.getRecipeByIngredientName(ingredientName);
+//    }
 }

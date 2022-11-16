@@ -18,24 +18,19 @@ import java.util.Objects;
 public class Recipe {
     @Id
     @SequenceGenerator(
-            name = "recipe_sequence",
-            sequenceName = "recipe_sequence",
-            allocationSize = 1 //increment
+            name = "recipe_sequence", sequenceName = "recipe_sequence", allocationSize = 1 //increment
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "recipe_sequence"
+            strategy = GenerationType.SEQUENCE, generator = "recipe_sequence"
     )
     @Column(
-            name = "id",
-            updatable = false //no one can update it
+            name = "id", updatable = false //no one can update it
 
     )
     private Integer id;
     @Column(nullable = false)
     private String name;
 
-    //    @Transient //change later!
     @ElementCollection
     private List<Ingredient> ingredient;
     @Column(nullable = false)

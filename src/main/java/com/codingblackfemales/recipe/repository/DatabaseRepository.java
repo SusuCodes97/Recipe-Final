@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository("database")
 public interface DatabaseRepository extends JpaRepository<Recipe, Integer> {
 
 //    @Query("SELECT i FROM Ingredient i where i.name = :name")
-//    List<Recipe> findbyIngredientName(String name);
+//    Set<Recipe> findbyIngredientName(String name);
 
     @Query("SELECT r FROM Recipe r where r.name = :name")
     List<Recipe> getByName(String name);
