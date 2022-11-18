@@ -6,10 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/recipes")
@@ -52,14 +50,31 @@ public class RecipeController {
     @ResponseStatus(HttpStatus.OK)
     public List<Recipe> getByName(@PathVariable("name") String name) {
         //THIS WORKS BUT GET RID OF CAPITALS//cases
-        return recipeService.getByName(name);
+        String nameLowerCase = name.toLowerCase();
+        return recipeService.getByName(nameLowerCase);
     }
 
 
-//    @GetMapping("/ingredient/{name}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Set<Recipe> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
-//        //THIS WORKS BUT GET RID OF CAPITALS//cases
-//        return recipeService.getRecipeByIngredientName(ingredientName);
-//    }
+    @GetMapping("/ingredient/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Optional<Recipe>> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
+        //THIS WORKS BUT GET RID OF CAPITALS//cases
+        String ingredientNameLowerCase = ingredientName.toLowerCase();
+//        System.out.println(recipeService.getByIngredient(ingredientName));
+        return recipeService.getByIngredient(ingredientNameLowerCase);
+    }
 }
+
+
+//#TODO:
+/*
+- fix namings
+- refactor get by name and get by ingredient and write properly
+- make id not needed (atm it says empty field)
+- get rid of id and recipe_id in ingredients when getting on postman
+- TESTS
+- more streams?
+- factory?
+
+*/
+

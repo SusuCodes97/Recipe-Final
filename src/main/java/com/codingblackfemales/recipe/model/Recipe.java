@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,14 +25,17 @@ public class Recipe {
             strategy = GenerationType.SEQUENCE, generator = "recipe_sequence"
     )
     @Column(
-            name = "id", updatable = false //no one can update it
+            name = "recipe_id", updatable = false //no one can update it
 
     )
-    private Integer id;
+    private Integer id; //do I have to change to interger/long. TRY SERIAL!?
     @Column(nullable = false)
     private String name;
 
-    @ElementCollection
+//    @ElementCollection
+   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
+//    @OneToMany(mappedBy="recipe")
     private List<Ingredient> ingredient;
     @Column(nullable = false)
     private String instruction;

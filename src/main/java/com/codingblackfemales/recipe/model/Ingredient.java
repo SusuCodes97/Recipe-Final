@@ -5,22 +5,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serial;
 import java.util.Objects;
 
 @Data
 //@AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Embeddable
+@Entity
+@Table(name="INGREDIENTS")
+//@Embeddable
 public class Ingredient {
-    @Column
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
+    private long id; // do i have to change to long/integer. TRY SERIAL
+
+//        @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Column(name="recipe_id")
+    private Long recipeId;
+    @Column(name = "ingredient_name")
     private String name;
-    @Column
+    @Column(name = "ingredient_quantity")
     private double quantity;
+
+//    @ManyToOne
+//    @JoinColumn(name="recipe_id", nullable=false)
+//    private Recipe recipe;
 
     public Ingredient(String name, double quantity) {
         this.name = name;

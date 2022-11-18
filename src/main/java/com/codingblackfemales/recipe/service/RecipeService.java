@@ -1,13 +1,15 @@
 package com.codingblackfemales.recipe.service;
 
+import com.codingblackfemales.recipe.model.Ingredient;
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.repository.DatabaseRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class RecipeService {
@@ -26,11 +28,28 @@ public class RecipeService {
         if(!chosenRecipe) {
             throw new IllegalStateException("Recipe with id " + id + " not found");
         }else {
+
             return databaseRepository.findById(id);
         }
     }
 
+    //refactor this! MAke sure it doesnt include the id and recipe id when showing ingredients
     public List<Recipe> getAllRecipes() {
+        //tried getting rid of id and recipe id from postman but didnt work
+//        List<Recipe> recipeListNotRefactored = databaseRepository.findAll();
+
+//        for (Recipe recipe: recipeListNotRefactored) {
+//
+//            List<Ingredient> ingredients = recipe.getIngredient();
+//            List<Ingredient> ingredientsEditedList = new ArrayList<>();
+//            for (Ingredient ingredient: ingredients) {
+//               Ingredient ingredientEdited = new Ingredient(ingredient.getName(), ingredient.getQuantity());
+//               ingredientsEditedList.add(ingredientEdited);
+//            }
+//            recipe.setIngredient(ingredientsEditedList);
+//            System.out.println(recipe);
+//        }
+
         return databaseRepository.findAll();
     }
 
@@ -88,12 +107,30 @@ public class RecipeService {
 //        databaseRepository.save(update2);
     }
 
+    //refactor this! MAke sure it doesnt include the id and recipe id when showing ingredients
     public List<Recipe> getByName(String name){
         return databaseRepository.getByName(name);
     }
 
-//    public Set<Recipe> getRecipeByIngredientName(String ingredientName){
+//    public List<Ingredient> getRecipeByIngredientName(String ingredientName){
+//        System.out.println(databaseRepository.findbyIngredientName(ingredientName));
 //        return databaseRepository.findbyIngredientName(ingredientName);
 //    }
+
+    //refactor this! MAke sure it doesnt include the id and recipe id when showing ingredients
+    public List<Optional<Recipe>> getByIngredient(String ingredientName){
+        List<Ingredient> listOfIngredients= databaseRepository.findbyIngredientName(ingredientName);
+        List<Optional<Recipe>> recipes = new ArrayList<>();
+        for (Ingredient ingredient: listOfIngredients
+             ) {
+            System.out.println(ingredient.getRecipeId());
+            Integer id = Math.toIntExact(ingredient.getRecipeId());
+            recipes.add(databaseRepository.findById(id));
+        }
+//        List<Recipe> recipe = recipes.get();
+        return recipes;
+    }
+
+
 
 }
