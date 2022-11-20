@@ -1,9 +1,6 @@
 package com.codingblackfemales.recipe.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -11,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 //@Data
+//@Builder
 //@NoArgsConstructor
 //@AllArgsConstructor
 @ToString
@@ -35,7 +33,6 @@ public class Recipe {
 //    @ElementCollection
    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    @JoinColumn(name = "recipe_id", referencedColumnName = "recipe_id")
-//    @OneToMany(mappedBy="recipe")
     private List<Ingredient> ingredient;
     @Column(nullable = false)
     private String instruction;

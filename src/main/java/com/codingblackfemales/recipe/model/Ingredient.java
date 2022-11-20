@@ -40,6 +40,22 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Long getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
+    }
+
     public String getName() {
         return name;
     }
@@ -56,24 +72,5 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ingredient that = (Ingredient) o;
-        return Double.compare(that.quantity, quantity) == 0 && Objects.equals(name, that.name);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, quantity);
-    }
-
-    @Override
-    public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", quantity=" + quantity +
-                '}';
-    }
 }

@@ -2,6 +2,7 @@ package com.codingblackfemales.recipe.controller;
 
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.service.RecipeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,13 @@ import java.util.Optional;
 @RequestMapping("/recipes")
 public class RecipeController {
 
-    @Autowired
+//    @Autowired
     private RecipeService recipeService;
+
+    //get rid of
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -59,11 +65,18 @@ public class RecipeController {
     @ResponseStatus(HttpStatus.OK)
     public List<Optional<Recipe>> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
         //THIS WORKS BUT GET RID OF CAPITALS//cases
-        String ingredientNameLowerCase = ingredientName.toLowerCase();
+//        String ingredientNameLowerCase = ingredientName.toLowerCase();
 //        System.out.println(recipeService.getByIngredient(ingredientName));
-        return recipeService.getByIngredient(ingredientNameLowerCase);
+        return recipeService.getByIngredient(ingredientName);
     }
+
+//    @GetMapping("/greeting")
+//    public String greeting() {
+//        return "Hello World!";
+//    }
 }
+
+//
 
 
 //#TODO:

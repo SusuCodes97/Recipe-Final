@@ -3,6 +3,8 @@ package com.codingblackfemales.recipe.service;
 import com.codingblackfemales.recipe.model.Ingredient;
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.repository.DatabaseRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+//@RequiredArgsConstructor
 public class RecipeService {
 
     private DatabaseRepository databaseRepository;
@@ -54,6 +57,7 @@ public class RecipeService {
     }
 
     public void postRecipe(Recipe recipe) {
+        // maybe try making the information received lowercase in this section?
         if(recipe.getInstruction() == null || recipe.getIngredient() == null || recipe.getName() == null) {
             throw  new IllegalStateException("Fields cannot be empty");
         }

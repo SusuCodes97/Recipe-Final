@@ -16,16 +16,50 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 public class GreetingControllerTests {
 
     private static final String GREETING_ENDPOINT = "/greeting";
+    private static final String GET_ALL = "/recipes";
+
+    private static final String GET_BY_ID = "/recipes/1";
+
+    private static final String POST = "/recipes";
+
+
 
     @Autowired
     private TestRestTemplate restTemplate;
 
+//    @Test
+//    @DisplayName("return Hello World!")
+//    void receivesGreetingRequests() {
+//        final ResponseEntity<String> response = restTemplate.getForEntity(GREETING_ENDPOINT, String.class);
+//
+//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response.getBody()).isEqualTo("Hello World!");
+//    }
+
     @Test
-    @DisplayName("return Hello World!")
-    void receivesGreetingRequests() {
-        final ResponseEntity<String> response = restTemplate.getForEntity(GREETING_ENDPOINT, String.class);
+    @DisplayName("gets all recipes")
+    void getsAllRecipes() {
+        final ResponseEntity<String> response = restTemplate.getForEntity(GET_ALL, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo("Hello World!");
+//        assertThat(response.getBody()).isEqualTo("Hello World!");
+    }
+
+//    @Test
+//    @DisplayName("gets all recipes")
+//    void getsRecipeById() {
+//        final ResponseEntity<String> response = restTemplate.getForEntity(GET_ALL, String.class);
+//
+//        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+////        assertThat(response.getBody()).isEqualTo("Hello World!");
+//    }
+
+    @Test
+    @DisplayName("gets all recipes")
+    void postRecipe() {
+        final ResponseEntity<String> response = restTemplate.getForEntity(POST, String.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+//        assertThat(response.getBody()).isEqualTo("Hello World!");
     }
 }

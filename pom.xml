@@ -129,3 +129,114 @@
     </build>
 
 </project>
+
+
+
+
+        <!--        <?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<project xmlns="http://maven.apache.org/POM/4.0.0"-->
+        <!--         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+        <!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
+        <!--<modelVersion>4.0.0</modelVersion>-->
+
+        <!--<parent>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--    <version>2.7.4</version>  &lt;!&ndash;If this doesnt work, change back to 2.6.3&ndash;&gt;-->
+        <!--    <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+        <!--</parent>-->
+
+        <!--<groupId>com.codingblackfemales</groupId>-->
+        <!--<artifactId>recipe</artifactId>-->
+        <!--<version>0.0.1</version>-->
+        <!--<name>Recipe API</name>-->
+        <!--<description>A simple web (JSON over HTTP) API to manage cooking recipes.</description>-->
+
+        <!--<properties>-->
+        <!--    <java.version>17</java.version>-->
+        <!--    <maven.compiler.source>17</maven.compiler.source>-->
+        <!--    <maven.compiler.target>17</maven.compiler.target>-->
+        <!--    <junit.jupiter.version>5.7.2</junit.jupiter.version> &lt;!&ndash; used to be 5.9.0 &ndash;&gt;-->
+        <!--    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+        <!--</properties>-->
+
+        <!--<dependencies>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--        <exclusions>-->
+        <!--            <exclusion>-->
+        <!--                <groupId>org.yaml</groupId>-->
+        <!--                <artifactId>snakeyaml</artifactId>-->
+        <!--            </exclusion>-->
+        <!--        </exclusions>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.yaml</groupId>-->
+        <!--        <artifactId>snakeyaml</artifactId>-->
+        <!--        <version>1.33</version>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springdoc</groupId>-->
+        <!--        <artifactId>springdoc-openapi-ui</artifactId>-->
+        <!--        <version>1.6.11</version>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.projectlombok</groupId>-->
+        <!--        <artifactId>lombok</artifactId>-->
+        <!--        <optional>true</optional>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.postgresql</groupId>-->
+        <!--        <artifactId>postgresql</artifactId>-->
+        <!--        <scope>runtime</scope>-->
+        <!--    </dependency>-->
+
+
+        <!--    &lt;!&ndash; TEST SCOPE &ndash;&gt;-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.junit.jupiter</groupId>-->
+        <!--        <artifactId>junit-jupiter</artifactId>-->
+        <!--        <version>5.7.2</version>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.mockito</groupId>-->
+        <!--        <artifactId>mockito-core</artifactId> &lt;!&ndash; used to be mockito-junit-jupiter &ndash;&gt;-->
+        <!--        <version>3.9.0</version>  &lt;!&ndash; used to be 4.8.0 &ndash;&gt;-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--    <dependency>-->
+        <!--        <groupId>org.assertj</groupId>-->
+        <!--        <artifactId>assertj-core</artifactId>-->
+        <!--        <scope>test</scope>-->
+        <!--    </dependency>-->
+        <!--</dependencies>-->
+
+        <!--<build>-->
+        <!--    <plugins>-->
+        <!--        <plugin>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--            <configuration>-->
+        <!--                <excludes>-->
+        <!--                    <exclude>-->
+        <!--                        <groupId>org.projectlombok</groupId>-->
+        <!--                        <artifactId>lombok</artifactId>-->
+        <!--                    </exclude>-->
+        <!--                </excludes>-->
+        <!--            </configuration>-->
+        <!--        </plugin>-->
+        <!--    </plugins>-->
+        <!--</build>-->
+
+        <!--</project>-->
