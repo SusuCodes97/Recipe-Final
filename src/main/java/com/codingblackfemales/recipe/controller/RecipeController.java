@@ -2,8 +2,6 @@ package com.codingblackfemales.recipe.controller;
 
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.service.RecipeService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,38 +53,29 @@ public class RecipeController {
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
     public List<Recipe> getByName(@PathVariable("name") String name) {
-        //THIS WORKS BUT GET RID OF CAPITALS//cases
         String nameLowerCase = name.toLowerCase();
-        return recipeService.getByName(nameLowerCase);
+        return recipeService.getRecipeByName(nameLowerCase);
     }
 
 
     @GetMapping("/ingredient/{name}")
     @ResponseStatus(HttpStatus.OK)
     public List<Optional<Recipe>> getRecipeByIngredientName(@PathVariable("name") String ingredientName) {
-        //THIS WORKS BUT GET RID OF CAPITALS//cases
-//        String ingredientNameLowerCase = ingredientName.toLowerCase();
-//        System.out.println(recipeService.getByIngredient(ingredientName));
-        return recipeService.getByIngredient(ingredientName);
+        String ingredientNameLowerCase = ingredientName.toLowerCase();
+        return recipeService.getRecipeByIngredientName(ingredientNameLowerCase);
     }
-
-//    @GetMapping("/greeting")
-//    public String greeting() {
-//        return "Hello World!";
-//    }
 }
 
-//
 
 
 //#TODO:
 /*
-- fix namings
-- refactor get by name and get by ingredient and write properly
+- fix namings - DONE
+- refactor get by name and get by ingredient and write properly - DONE
 - make id not needed (atm it says empty field)
 - get rid of id and recipe_id in ingredients when getting on postman
 - TESTS
-- more streams?
+- more streams? - DONE
 - factory?
 
 */

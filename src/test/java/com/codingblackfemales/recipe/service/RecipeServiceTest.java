@@ -3,15 +3,13 @@ package com.codingblackfemales.recipe.service;
 import com.codingblackfemales.recipe.model.Ingredient;
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.repository.DatabaseRepository;
-import com.codingblackfemales.recipe.repository.RecipeDAO;
-import org.hamcrest.MatcherAssert;
 //import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 //import org.mockito.Mock;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +17,9 @@ import java.util.Optional;
 
 //import static org.hamcrest.MatcherAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.type;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.ExpectedCount.times;
 
 public class RecipeServiceTest {
 
@@ -67,16 +62,22 @@ public class RecipeServiceTest {
         List<Recipe> recipeList = new ArrayList<>();
         Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
         recipeList.add(recipe1);
-        //        given(databaseRepository.save(recipe1)).willCallRealMethod();
+        given(databaseRepository.save(recipe1)).willReturn(recipe1);
 
 //        Mockito.when(databaseRepository.findbyIngredientName("chicken")).thenReturn(ingredients); // <-- Add this line
 
-        verify(databaseRepository).save(recipe1);
+//        verify(databaseRepository).save(recipe1);
 //
 
 //         underTest.postRecipe(recipe1);
 //
 //        assertThat();
+
+
+        ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+        verify(databaseRepository).save(recipeArgumentCaptor.capture());
+        Recipe actualRecipeSaved = recipeArgumentCaptor.getValue();
+        assertEquals(recipe1, actualRecipeSaved);
     }
 
     @Test
@@ -150,11 +151,40 @@ public class RecipeServiceTest {
         expectedRecipeList.add(recipe1);
         expectedRecipeList.add(recipe2);
 
-        given(databaseRepository.getByName("chicken")).willReturn(expectedRecipeList);
-        List<Recipe> actualRecipeList = underTest.getByName("chicken");
+        given(databaseRepository.findRecipeByName("chicken")).willReturn(expectedRecipeList);
+        List<Recipe> actualRecipeList = underTest.getRecipeByName("chicken");
 
         assertEquals(expectedRecipeList, actualRecipeList);
+    }
 
+    @Test
+    public void canUpdateRecipe() {
+//        List<Ingredient> ingredients = new ArrayList<>();
+//        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
+//        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+//        ingredients.add(ingredient1);
+//        ingredients.add(ingredient2);
+//
+//        Recipe recipe1 = new Recipe(1, "chicken shish", ingredients, "heat up", "chicken.come");
+//
+//        given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
+//
+//        Recipe recipe2 = new Recipe(2, "lamb", ingredients, "heat up", "chicken.come");
+//
+//        given(databaseRepository.save(recipe2)).willReturn(recipe2);
+//
+//        ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+//        verify(databaseRepository).save(recipeArgumentCaptor.capture());
+//        Recipe actualRecipeSaved = recipeArgumentCaptor.getValue();
+//        assertEquals(recipe1, actualRecipeSaved);
+//        List<Recipe> expectedRecipeList = new ArrayList<>();
+//        expectedRecipeList.add(recipe1);
+//        expectedRecipeList.add(recipe2);
+//
+//        given(databaseRepository.findRecipeByName("chicken")).willReturn(expectedRecipeList);
+//        List<Recipe> actualRecipeList = underTest.getRecipeByName("chicken");
+//
+//        assertEquals(expectedRecipeList, actualRecipeList);
     }
 
 

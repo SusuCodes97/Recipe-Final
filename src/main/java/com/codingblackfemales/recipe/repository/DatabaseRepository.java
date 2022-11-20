@@ -2,13 +2,11 @@ package com.codingblackfemales.recipe.repository;
 
 import com.codingblackfemales.recipe.model.Ingredient;
 import com.codingblackfemales.recipe.model.Recipe;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Set;
 
 @Repository("database")
 public interface DatabaseRepository extends JpaRepository<Recipe, Integer> {
@@ -19,15 +17,11 @@ public interface DatabaseRepository extends JpaRepository<Recipe, Integer> {
     //   FriendList findFriend(long id);
     //https://coderanch.com/t/740840/frameworks/Spring-Data-JPA-Invoke-Data
     @Query("SELECT i FROM Ingredient i where LOWER(i.name) LIKE %:name%")
-    List<Ingredient> findbyIngredientName(String name);
-
+    List<Ingredient> findRecipeByIngredientName(String name);
 
     @Query("SELECT r FROM Recipe r where r.name LIKE %:name%")
-    List<Recipe> getByName(String name);
+    List<Recipe> findRecipeByName(String name);
 
 
 
 }
-
-
-//SELECT m FROM Material m WHERE m.productName LIKE %:searchText%
