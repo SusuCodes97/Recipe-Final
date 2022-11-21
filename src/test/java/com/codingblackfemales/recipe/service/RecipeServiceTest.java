@@ -148,11 +148,9 @@ public class RecipeServiceTest {
 
     @Test
     public void canGetRecipeById() {
-        List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
-        Ingredient ingredient1 = new Ingredient("spices", 1.0);
-        ingredients.add(ingredient1);
-        ingredients.add(ingredient2);
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
 
         Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
         Recipe recipe2 = new Recipe(2, "chicken", ingredients, "heat up", "chicken.come");
@@ -189,15 +187,31 @@ public class RecipeServiceTest {
 
     }
 
+    @Test
+    public void canThrowWhenIdIsNull() {
+//        given(databaseRepository.findById(null)).willReturn(null);
+
+        assertThatThrownBy(() -> underTest.getRecipeById(null))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("ID Cannot be null");
+    }
+
+    @Test
+    public void canThrowWhenRecipeWithIdDoesntExistForFindById() {
+        given(databaseRepository.findById(1)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> underTest.getRecipeById(1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Recipe with id 1 not found");
+    }
+
 //can get recipebyname when capitals
     //cangetrecipebyIgredientnamewhen capitals
     @Test
     public void canGetRecipeByName() {
-        List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
         Ingredient ingredient1 = new Ingredient("chicken", 1.0);
-        ingredients.add(ingredient1);
-        ingredients.add(ingredient2);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
 
         Recipe recipe1 = new Recipe("chicken shish", ingredients, "heat up", "chicken.come");
         Recipe recipe2 = new Recipe("lamb", ingredients, "heat up", "chicken.come");
@@ -212,8 +226,33 @@ public class RecipeServiceTest {
         assertEquals(expectedRecipeList, actualRecipeList);
     }
 
-//    @Test
-//    public void canUpdateRecipe() {
+    //
+    @Test
+    public void canUpdateRecipe() {
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe("chicken shish", ingredients, "heat up", "chicken.come");
+        Recipe recipe2 = new Recipe("lamb", ingredients, "heat up", "chicken.come");
+
+        given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
+//        ArgumentCaptor<Recipe> arg = ArgumentCaptor.forClass(Recipe.class);
+        underTest.updateRecipe(1, recipe2);
+                verify(databaseRepository).save(any());
+
+//        verify(databaseRepository).save(arg.capture());
+
+//        Recipe savedRecipe = arg.getValue();
+
+
+
+
+
+
+//        verify(databaseRepository)
+//
+//        assertThat(underTest.updateRecipe(1, recipe2)).
 //        List<Ingredient> ingredients = new ArrayList<>();
 //        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
 //        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
@@ -240,8 +279,84 @@ public class RecipeServiceTest {
 //        List<Recipe> actualRecipeList = underTest.getRecipeByName("chicken");
 //
 //        assertEquals(expectedRecipeList, actualRecipeList);
-//    }
+    }
 
+    @Test
+    public void cantThrowWhenIdIsNullForUpdate() {
+
+
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe(1, "chicken shish", ingredients, "heat up", "chicken.come");
+        Recipe recipe2 = new Recipe("lamb", ingredients, "heat up", "chicken.come");
+
+//        given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
+
+        assertThatThrownBy(() -> underTest.updateRecipe(null, recipe2))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Id cannot be null");
+    }
+
+    @Test
+    public void cantThrowWhenRecipeIsNullForUpdate() {
+
+        assertThatThrownBy(() -> underTest.updateRecipe(1, null))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Update recipe cannot be null");
+    }
+
+    @Test
+    public void cantThrowWhenNameIsNullForUpdate() {
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe(1, null, ingredients, "heat up", "chicken.come");
+
+        assertThatThrownBy(() -> underTest.updateRecipe(1, recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Recipe name cannot be null");
+    }
+
+    @Test
+    public void cantThrowWhenIngredientIsNullForUpdate() {
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe(1, "chicken", null, "heat up", "chicken.come");
+
+        assertThatThrownBy(() -> underTest.updateRecipe(1, recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Ingredients cannot be null");
+    }
+
+    @Test
+    public void cantThrowWhenInstructionIsNullForUpdate() {
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe(1, "chicken", ingredients, null, "chicken.come");
+
+        assertThatThrownBy(() -> underTest.updateRecipe(1, recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Instructions cannot be null");
+    }
+
+    @Test
+    public void cantThrowWhenIdDoesntExistForUpdate() {
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        // do given. and put update one in
+        Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
+
+        given(databaseRepository.findById(1)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> underTest.updateRecipe(1, recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Recipe with id 1 does not exist");
+    }
 
     @Test
     public void canDeleteRecipe() {
@@ -275,6 +390,16 @@ public class RecipeServiceTest {
 
 
 //        given(databaseRepository.)
+    }
+
+
+    @Test
+    public void canThrowWhenRecipeWithIdDoesntExistForDelete() {
+        given(databaseRepository.findById(1)).willReturn(Optional.empty());
+
+        assertThatThrownBy(() -> underTest.deleteById(1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Recipe with id 1 does not exist. Cannot delete a recipe which does not exist");
     }
 
 

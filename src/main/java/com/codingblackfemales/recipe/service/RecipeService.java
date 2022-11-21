@@ -106,9 +106,9 @@ public class RecipeService {
         if (id == null) {
             throw new IllegalStateException("Id cannot be null");
         }else if (update == null ) {
-            throw new IllegalStateException("recipe cannot be null");
+            throw new IllegalStateException("Update recipe cannot be null");
         }else if (update.getName() == null ) {
-            throw new IllegalStateException("recipe name cannot be null");
+            throw new IllegalStateException("Recipe name cannot be null");
         } else if (update.getIngredient() == null) {
             throw new IllegalStateException("Ingredients cannot be null");
         } else if (update.getInstruction() == null) {
@@ -118,7 +118,7 @@ public class RecipeService {
         Optional<Recipe> recipeToUpdate = databaseRepository.findById(id);
 
         if (recipeToUpdate.isEmpty()) {
-            throw new IllegalStateException("Id is not found");
+            throw new IllegalStateException("Recipe with id " + id + " does not exist");
         }
 
         Recipe recipe = recipeToUpdate.get();
