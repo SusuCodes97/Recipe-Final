@@ -50,7 +50,11 @@ public class RecipeService {
 //            System.out.println(recipe);
 //        }
 
-        return databaseRepository.findAll();
+        List<Recipe> recipeList = databaseRepository.findAll();
+        if (recipeList.isEmpty() ) {
+            throw new IllegalStateException("No recipes found");
+        }
+        return recipeList;
     }
 
     public void postRecipe(Recipe recipe) {
