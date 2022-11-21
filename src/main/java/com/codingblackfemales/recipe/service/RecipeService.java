@@ -24,8 +24,8 @@ public class RecipeService {
         if (id == null) {
             throw new IllegalStateException("ID Cannot be null");
         }
-        boolean chosenRecipe = databaseRepository.existsById(id);
-        if(!chosenRecipe) {
+        Optional<Recipe> chosenRecipe = databaseRepository.findById(id);
+        if(chosenRecipe.isEmpty()) {
             throw new IllegalStateException("Recipe with id " + id + " not found");
         }else {
 
@@ -50,22 +50,30 @@ public class RecipeService {
 //            System.out.println(recipe);
 //        }
 
+
+        //is this meant to be null or isEmpty?
+
+        //this seems to affect find by ingredients
         List<Recipe> recipeList = databaseRepository.findAll();
-        if (recipeList.isEmpty() ) {
+        if (recipeList == null || recipeList.isEmpty()) {
             throw new IllegalStateException("No recipes found");
         }
         return recipeList;
     }
 
     public void postRecipe(Recipe recipe) {
-        recipe.setName(recipe.getName().toLowerCase());
+
+        if(recipe.getName() != null ) {
+            recipe.setName(recipe.getName().toLowerCase());
+        }
 
         List<Ingredient> ingredientList = recipe.getIngredient();
 //        for (Ingredient ing: ingredientList) {
 //            ing.setName(ing.getName().toLowerCase());
 //        }
-
-        ingredientList.stream().forEach(ingredient -> ingredient.setName(ingredient.getName().toLowerCase()));
+        if(recipe.getIngredient() != null ) {
+            ingredientList.stream().forEach(ingredient -> ingredient.setName(ingredient.getName().toLowerCase()));
+        }
 
         if(recipe.getInstruction() == null || recipe.getIngredient() == null || recipe.getName() == null) {
             throw  new IllegalStateException("Fields cannot be empty");
@@ -79,11 +87,17 @@ public class RecipeService {
     }
 
     public void deleteById(Integer id) {
-        boolean recipeExists = databaseRepository.existsById(id);
-        System.out.println("deleted from service");
-        if (!recipeExists){
-            throw  new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
+
+        Optional<Recipe> chosenRecipe = databaseRepository.findById(id);
+        if(chosenRecipe.isEmpty()) {
+            throw new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
         }
+
+//        boolean recipeExists = databaseRepository.existsById(id);
+//        System.out.println("deleted from service");
+//        if (!recipeExists){
+//            throw  new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
+//        }
         databaseRepository.deleteById(id);
     }
 
@@ -125,13 +139,16 @@ public class RecipeService {
     public List<Optional<Recipe>> getRecipeByIngredientName(String ingredientName){
         List<Ingredient> listOfIngredients= databaseRepository.findRecipeByIngredientName(ingredientName);
         List<Optional<Recipe>> recipes = new ArrayList<>();
-//        for (Ingredient ingredient: listOfIngredients
-//             ) {
-//            System.out.println(ingredient.getRecipeId());
-//            Integer id = ingredient.getRecipeId();
-//            recipes.add(databaseRepository.findById(id));
-//        }
-        listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
+        for (Ingredient ingredient: listOfIngredients
+             ) {
+            System.out.println(ingredient.getRecipeId());
+//            System.out.println("LOOL");
+            Integer id = ingredient.getRecipeId();
+            recipes.add(databaseRepository.findById(id));
+        }
+
+        //stream sometimes doesnt work for some reason
+//        listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
         return recipes;
     }
 }

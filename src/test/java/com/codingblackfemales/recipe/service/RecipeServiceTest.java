@@ -4,18 +4,14 @@ import com.codingblackfemales.recipe.model.Ingredient;
 import com.codingblackfemales.recipe.model.Recipe;
 import com.codingblackfemales.recipe.repository.DatabaseRepository;
 //import org.junit.Test;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 //import org.mockito.Mock;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,35 +31,11 @@ public class RecipeServiceTest {
     @InjectMocks
     private RecipeService underTest;
 
-    //this. doesnt make a difference, can remove?
-//    @BeforeEach
-//    void setUp(){
-//        this.databaseRepository = Mockito.mock(DatabaseRepository.class);
-////        ingredient = Mockito.mock(Ingredient.class);
-////        ingredient = new Ingredient("chicken", 1.0);
-////        MockitoAnnotations.initMocks(this);
-//        this.underTest = new RecipeService(databaseRepository);
-//    }
-
-    /*
-       CustomerData customerDataTest = customerData;
-   //when
-   Mockito.when(customerDataRepository.findCustomerByDialogId(Mockito.any())).thenReturn(new CustomerData()); // <-- Add this line
-   customerDataService.giveConsent(false,22L);
-   //then
-   verify(customerDataRepository,times(1)).save(customerDataTest);
-    * */
     @Test
     public void canAddRecipeEntry(){
-//        Ingredient ingredient = new Ingredient("chicken", 1.0);
-//        Recipe recipe1 = new Recipe(1, "chicken", (List<Ingredient>) ingredient, "heat up", "chicken.come");
-//        given(recipeDAO.postRecipe(recipe1)).willReturn(1);
-
-        List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
         Ingredient ingredient1 = new Ingredient("chicken", 1.0);
-        ingredients.add(ingredient1);
-        ingredients.add(ingredient2);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
 
         Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
 
@@ -94,19 +66,68 @@ public class RecipeServiceTest {
     }
 
     @Test
+    public void canThrowWhenNameFieldIsMissing(){
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+
+        Recipe recipe1 = new Recipe(1, null, ingredients, "heat up", "chicken.come");
+
+        assertThatThrownBy(() -> underTest.postRecipe(recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Fields cannot be empty");
+
+    }
+
+    @Test
+    public void canThrowWhenIngredientFieldIsMissing(){
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+
+        Recipe recipe1 = new Recipe(1, "chicken", null, "heat up", "chicken.come");
+
+        assertThatThrownBy(() -> underTest.postRecipe(recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Fields cannot be empty");
+    }
+
+    @Test
+    public void canThrowWhenIdAlreadyExists(){
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+        Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
+
+        given(databaseRepository.existsById(1)).willReturn(true);
+
+        assertThatThrownBy(() -> underTest.postRecipe(recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Recipe with id 1 already exists. Cannot register with the same id");
+    }
+    @Test
+    public void canThrowWhenInstructionFieldIsMissing(){
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
+
+        Recipe recipe1 = new Recipe(1, "chicken", ingredients, null, "chicken.come");
+
+        assertThatThrownBy(() -> underTest.postRecipe(recipe1))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Fields cannot be empty");
+    }
+
+    @Test
     public void canGetAllRecipes() {
-        List<Ingredient> ingredients = new ArrayList<>();
-        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
-        Ingredient ingredient1 = new Ingredient("spices", 1.0);
-        ingredients.add(ingredient1);
-        ingredients.add(ingredient2);
+        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
+        Ingredient ingredient2 = new Ingredient("lamb", 1.0);
+        List<Ingredient> ingredients = List.of(ingredient1, ingredient2);
 
         Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
-        Recipe recipe2 = new Recipe(2, "chicken", ingredients, "heat up", "chicken.come");
+        Recipe recipe2 = new Recipe(2, "lamb", ingredients, "heat up", "chicken.come");
 
-        List<Recipe> expectedRecipeList = new ArrayList<>();
-        expectedRecipeList.add(recipe1);
-        expectedRecipeList.add(recipe2);
+        List<Recipe> expectedRecipeList = List.of(recipe1, recipe2);
 
         given(databaseRepository.findAll()).willReturn(expectedRecipeList);
 
@@ -136,12 +157,18 @@ public class RecipeServiceTest {
         Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
         Recipe recipe2 = new Recipe(2, "chicken", ingredients, "heat up", "chicken.come");
 
-        given(this.databaseRepository.findById(anyInt())).willReturn(Optional.of(recipe1));
+//        given(this.databaseRepository.findById(recipe1.getId())).willReturn(Optional.of(recipe1));
 
-        Optional<Recipe> expected  = this.databaseRepository.findById(1);
-        Optional<Recipe> actual  = underTest.getRecipeById(1);
-        System.out.println(this.databaseRepository.findById(1).get());
-        assertThat(actual).isEqualTo(expected);
+        when(databaseRepository.findById(1)).thenReturn(Optional.of(recipe1));
+
+        Recipe actual = underTest.getRecipeById(recipe1.getId()).get();
+
+        assertThat(actual).isEqualTo(recipe1);
+
+//        Optional<Recipe> expected  = this.databaseRepository.findById(1);
+//        Optional<Recipe> actual  = underTest.getRecipeById(1);
+//        System.out.println(this.databaseRepository.findById(1).get());
+//        assertThat(actual).isEqualTo(expected);
 //        Recipe recipe3 = new Recipe();
 //        recipe3.setId(3);
 //        recipe3.setIngredient(ingredients);
@@ -162,7 +189,8 @@ public class RecipeServiceTest {
 
     }
 
-
+//can get recipebyname when capitals
+    //cangetrecipebyIgredientnamewhen capitals
     @Test
     public void canGetRecipeByName() {
         List<Ingredient> ingredients = new ArrayList<>();
@@ -184,8 +212,8 @@ public class RecipeServiceTest {
         assertEquals(expectedRecipeList, actualRecipeList);
     }
 
-    @Test
-    public void canUpdateRecipe() {
+//    @Test
+//    public void canUpdateRecipe() {
 //        List<Ingredient> ingredients = new ArrayList<>();
 //        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
 //        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
@@ -212,7 +240,7 @@ public class RecipeServiceTest {
 //        List<Recipe> actualRecipeList = underTest.getRecipeByName("chicken");
 //
 //        assertEquals(expectedRecipeList, actualRecipeList);
-    }
+//    }
 
 
     @Test
@@ -234,14 +262,62 @@ public class RecipeServiceTest {
         List<Recipe> newRecipeList = new ArrayList<>();
         newRecipeList.add(recipe1);
 
-        underTest.deleteById(anyInt());
+//        given(databaseRepository.save())
+        given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
+//        given(databaseRepository.deleteById(1)).willReturn()
 
-        verify(databaseRepository).deleteById(anyInt());
+
+
+        underTest.deleteById(1);
+
+        verify(databaseRepository, times(1)).deleteById(1);
 
 
 
 //        given(databaseRepository.)
     }
 
+
+    @Test
+    public void canGetRecipeByIngredientName() {
+        List<Ingredient> ingredients = new ArrayList<>();
+        Ingredient ingredient2 = new Ingredient(1, 1, "chicken", 1.0);
+        Ingredient ingredient1 = new Ingredient(2, 2, "Lamb", 1.0);
+        ingredients.add(ingredient1);
+        ingredients.add(ingredient2);
+
+        Recipe recipe1 = new Recipe(1, "chicken shish", List.of(ingredient2, ingredient1), "heat up", "chicken.com");
+        Recipe recipe2 = new Recipe(2, "lamb", List.of(ingredient1), "heat up", "chicken.com");
+
+        List<Recipe> expectedRecipeList = new ArrayList<>();
+        expectedRecipeList.add(recipe1);
+
+        given(databaseRepository.findRecipeByIngredientName("chicken")).willReturn(List.of(ingredient2));
+//        List<Optional<Recipe>> actualRecipeList = underTest.getRecipeByIngredientName("chicken");
+
+//        verify()
+//        assertEquals(expectedRecipeList, actualRecipeList);
+
+
+        underTest.getRecipeByIngredientName("chicken");
+
+        //this is being invoked 2 times
+        verify(databaseRepository, times(1)).findRecipeByIngredientName("chicken");
+
+
+//        Mockito.when(databaseRepository.findbyIngredientName("chicken")).thenReturn(ingredients); // <-- Add this line
+
+//        verify(databaseRepository, times(1)).save(any());
+//
+
+//         underTest.postRecipe(recipe1);
+//
+//        assertThat();
+
+//
+//        ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
+////        verify(databaseRepository).findRecipeByIngredientName("chicken");
+//        assertTrue(recipeArgumentCaptor.capture().getName().equals("chicken"));
+    }
 
 }
