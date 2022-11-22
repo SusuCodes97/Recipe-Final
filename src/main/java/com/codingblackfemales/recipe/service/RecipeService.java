@@ -71,6 +71,7 @@ public class RecipeService {
 //        for (Ingredient ing: ingredientList) {
 //            ing.setName(ing.getName().toLowerCase());
 //        }
+
         if(recipe.getIngredient() != null ) {
             ingredientList.stream().forEach(ingredient -> ingredient.setName(ingredient.getName().toLowerCase()));
         }
@@ -122,13 +123,19 @@ public class RecipeService {
         }
 
         Recipe recipe = recipeToUpdate.get();
+        System.out.println(recipe.getIngredient());
         recipe.setId(id);
         recipe.setName(update.getName());
         recipe.setIngredient(update.getIngredient());
         recipe.setInstruction(update.getInstruction());
+
         recipe.setUrl(update.getUrl());
 
         databaseRepository.save(recipe);
+
+        //Attempt to get recipe_id of ingredients updated:
+        //        List<Ingredient> ingredients = recipe.getIngredient();
+        //        ingredients.stream().forEach(ingredient -> ingredient.setRecipeId(id));
 
     }
 
@@ -139,16 +146,13 @@ public class RecipeService {
     public List<Optional<Recipe>> getRecipeByIngredientName(String ingredientName){
         List<Ingredient> listOfIngredients= databaseRepository.findRecipeByIngredientName(ingredientName);
         List<Optional<Recipe>> recipes = new ArrayList<>();
-        for (Ingredient ingredient: listOfIngredients
-             ) {
-            System.out.println(ingredient.getRecipeId());
-//            System.out.println("LOOL");
-            Integer id = ingredient.getRecipeId();
-            recipes.add(databaseRepository.findById(id));
-        }
+//        for (Ingredient ingredient: listOfIngredients
+//             ) {
+//            Integer id = ingredient.getRecipeId();
+//            recipes.add(databaseRepository.findById(id));
+//        }
 
-        //stream sometimes doesnt work for some reason
-//        listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
+        listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
         return recipes;
     }
 }
