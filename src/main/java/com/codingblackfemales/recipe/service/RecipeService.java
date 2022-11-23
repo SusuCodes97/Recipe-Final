@@ -35,9 +35,9 @@ public class RecipeService {
 
     //is there a way to prevent the same recipe (ignoring id) being added?
     public void postRecipe(Recipe recipe) {
-        if(recipe.getInstruction() == null || recipe.getIngredient() == null || recipe.getName() == null) {
-            throw  new IllegalStateException("Fields cannot be empty");
-        }
+//        if(recipe.getInstruction() == null || recipe.getIngredient() == null || recipe.getName() == null) {
+//            throw  new IllegalStateException("Fields cannot be empty");
+//        }
         Recipe checkIfRecipeExists = recipeDAO.getRecipeById(recipe.getId());
 
         if (checkIfRecipeExists != null ){

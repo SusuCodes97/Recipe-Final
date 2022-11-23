@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -34,7 +35,7 @@ public class RecipeController {
         recipeService.updateRecipe(id, update);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Recipe> getAllRecipes(){
         return recipeService.getAllRecipes();
