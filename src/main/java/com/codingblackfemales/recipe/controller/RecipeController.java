@@ -16,7 +16,7 @@ public class RecipeController {
     @Autowired
     private RecipeService recipeService;
 
-    @PostMapping
+    @PostMapping("post")
     @ResponseStatus(HttpStatus.CREATED)
     public void postRecipe(@RequestBody Recipe recipe) {
         recipeService.postRecipe(recipe);
