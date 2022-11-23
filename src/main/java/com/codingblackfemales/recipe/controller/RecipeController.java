@@ -11,11 +11,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
-
-//    @Autowired
     private RecipeService recipeService;
 
-    //get rid of
     public RecipeController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }

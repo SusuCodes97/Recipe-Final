@@ -28,32 +28,11 @@ public class RecipeService {
         if(chosenRecipe.isEmpty()) {
             throw new IllegalStateException("Recipe with id " + id + " not found");
         }else {
-
             return databaseRepository.findById(id);
         }
     }
 
-    //refactor this! MAke sure it doesnt include the id and recipe id when showing ingredients
     public List<Recipe> getAllRecipes() {
-        //tried getting rid of id and recipe id from postman but didnt work
-//        List<Recipe> recipeListNotRefactored = databaseRepository.findAll();
-
-//        for (Recipe recipe: recipeListNotRefactored) {
-//
-//            List<Ingredient> ingredients = recipe.getIngredient();
-//            List<Ingredient> ingredientsEditedList = new ArrayList<>();
-//            for (Ingredient ingredient: ingredients) {
-//               Ingredient ingredientEdited = new Ingredient(ingredient.getName(), ingredient.getQuantity());
-//               ingredientsEditedList.add(ingredientEdited);
-//            }
-//            recipe.setIngredient(ingredientsEditedList);
-//            System.out.println(recipe);
-//        }
-
-
-        //is this meant to be null or isEmpty?
-
-        //this seems to affect find by ingredients
         List<Recipe> recipeList = databaseRepository.findAll();
         if (recipeList == null || recipeList.isEmpty()) {
             throw new IllegalStateException("No recipes found");
@@ -68,9 +47,6 @@ public class RecipeService {
         }
 
         List<Ingredient> ingredientList = recipe.getIngredient();
-//        for (Ingredient ing: ingredientList) {
-//            ing.setName(ing.getName().toLowerCase());
-//        }
 
         if(recipe.getIngredient() != null ) {
             ingredientList.stream().forEach(ingredient -> ingredient.setName(ingredient.getName().toLowerCase()));
@@ -94,11 +70,6 @@ public class RecipeService {
             throw new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
         }
 
-//        boolean recipeExists = databaseRepository.existsById(id);
-//        System.out.println("deleted from service");
-//        if (!recipeExists){
-//            throw  new IllegalStateException("Recipe with id " + id + " does not exist. Cannot delete a recipe which does not exist");
-//        }
         databaseRepository.deleteById(id);
     }
 
@@ -123,20 +94,13 @@ public class RecipeService {
         }
 
         Recipe recipe = recipeToUpdate.get();
-        System.out.println(recipe.getIngredient());
         recipe.setId(id);
         recipe.setName(update.getName());
         recipe.setIngredient(update.getIngredient());
         recipe.setInstruction(update.getInstruction());
-
         recipe.setUrl(update.getUrl());
 
         databaseRepository.save(recipe);
-
-        //Attempt to get recipe_id of ingredients updated:
-        //        List<Ingredient> ingredients = recipe.getIngredient();
-        //        ingredients.stream().forEach(ingredient -> ingredient.setRecipeId(id));
-
     }
 
     public List<Recipe> getRecipeByName(String name){
@@ -146,11 +110,6 @@ public class RecipeService {
     public List<Optional<Recipe>> getRecipeByIngredientName(String ingredientName){
         List<Ingredient> listOfIngredients= databaseRepository.findRecipeByIngredientName(ingredientName);
         List<Optional<Recipe>> recipes = new ArrayList<>();
-//        for (Ingredient ingredient: listOfIngredients
-//             ) {
-//            Integer id = ingredient.getRecipeId();
-//            recipes.add(databaseRepository.findById(id));
-//        }
 
         listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
         return recipes;
