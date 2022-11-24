@@ -34,9 +34,9 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipeList = databaseRepository.findAll();
-        if (recipeList == null || recipeList.isEmpty()) {
-            throw new IllegalStateException("No recipes found");
-        }
+//        if (recipeList == null || recipeList.isEmpty()) {
+//            throw new IllegalStateException("No recipes found");
+//        }
         return recipeList;
     }
 
@@ -108,10 +108,18 @@ public class RecipeService {
     }
 
     public List<Optional<Recipe>> getRecipeByIngredientName(String ingredientName){
-        List<Ingredient> listOfIngredients= databaseRepository.findRecipeByIngredientName(ingredientName);
+        List<Ingredient> listOfIngredients= databaseRepository
+                .findRecipeByIngredientName(ingredientName);
+
         List<Optional<Recipe>> recipes = new ArrayList<>();
 
+//        for (Ingredient ing: listOfIngredients) {
+//            Integer recipeId = ing.getRecipeId();
+//            recipes.add(databaseRepository.findById(recipeId));}
+
         listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
+
         return recipes;
     }
 }
+

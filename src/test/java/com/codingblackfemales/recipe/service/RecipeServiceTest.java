@@ -37,11 +37,12 @@ public class RecipeServiceTest {
     @Test
     @DisplayName("This test checks if a recipe can be posted successfully when all fields are provided")
     public void canPostRecipeEntry(){
-        Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.come");
+        Recipe recipe1 = new Recipe(1, "chicken", ingredients, "heat up", "chicken.com");
 
         when(databaseRepository.save(recipe1)).thenReturn(recipe1);
-//        when(databaseRepository.save(Mockito.any(Recipe.class))).thenReturn(recipe1);
+
         underTest.postRecipe(recipe1);
+
         verify(databaseRepository, times(1)).save(recipe1);
 
         ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
@@ -104,15 +105,16 @@ public class RecipeServiceTest {
         assertEquals(expectedRecipeList, actualRecipeList);
     }
 
-    @Test
-    @DisplayName("This test checks if an exception is thrown when the database is empty")
-    public void canThrowWhenDatabaseIsEmpty() {
-        given(databaseRepository.findAll()).willReturn(null);
-
-        assertThatThrownBy(() -> underTest.getAllRecipes())
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("No recipes found");
-    }
+    //get rid off!
+//    @Test
+//    @DisplayName("This test checks if an exception is thrown when the database is empty")
+//    public void canThrowWhenDatabaseIsEmpty() {
+//        given(databaseRepository.findAll()).willReturn(null);
+//
+//        assertThatThrownBy(() -> underTest.getAllRecipes())
+//                .isInstanceOf(IllegalStateException.class)
+//                .hasMessageContaining("No recipes found");
+//    }
 
 
     // GETBYID REQUEST
