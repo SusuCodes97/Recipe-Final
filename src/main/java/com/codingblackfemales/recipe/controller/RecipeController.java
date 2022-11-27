@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/recipes")
 public class RecipeController {
@@ -21,6 +21,7 @@ public class RecipeController {
     @PostMapping("/post")
     @ResponseStatus(HttpStatus.CREATED)
     public void postRecipe(@RequestBody Recipe recipe) {
+
         recipeService.postRecipe(recipe);
     }
 
@@ -63,18 +64,3 @@ public class RecipeController {
         return recipeService.getRecipeByIngredientName(ingredientNameLowerCase);
     }
 }
-
-
-
-//#TODO:
-/*
-- fix namings - DONE
-- refactor get by name and get by ingredient and write properly - DONE
-- make id not needed (atm it says empty field)
-- get rid of id and recipe_id in ingredients when getting on postman
-- TESTS
-- more streams? - DONE
-- factory?
-
-*/
-

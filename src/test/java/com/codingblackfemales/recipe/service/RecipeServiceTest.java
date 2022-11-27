@@ -105,18 +105,6 @@ public class RecipeServiceTest {
         assertEquals(expectedRecipeList, actualRecipeList);
     }
 
-    //get rid off!
-//    @Test
-//    @DisplayName("This test checks if an exception is thrown when the database is empty")
-//    public void canThrowWhenDatabaseIsEmpty() {
-//        given(databaseRepository.findAll()).willReturn(null);
-//
-//        assertThatThrownBy(() -> underTest.getAllRecipes())
-//                .isInstanceOf(IllegalStateException.class)
-//                .hasMessageContaining("No recipes found");
-//    }
-
-
     // GETBYID REQUEST
     @Test
     @DisplayName("This test checks if recipe can be retrieved based on ID")

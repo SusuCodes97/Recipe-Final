@@ -34,13 +34,10 @@ public class RecipeService {
 
     public List<Recipe> getAllRecipes() {
         List<Recipe> recipeList = databaseRepository.findAll();
-//        if (recipeList == null || recipeList.isEmpty()) {
-//            throw new IllegalStateException("No recipes found");
-//        }
         return recipeList;
     }
 
-    public void postRecipe(Recipe recipe) {
+    public int postRecipe(Recipe recipe) {
 
         if(recipe.getName() != null ) {
             recipe.setName(recipe.getName().toLowerCase());
@@ -61,6 +58,8 @@ public class RecipeService {
             throw  new IllegalStateException("Recipe with id " + recipe.getId() + " already exists. Cannot register with the same id");
         }
         databaseRepository.save(recipe);
+
+        return 1;
     }
 
     public void deleteById(Integer id) {
@@ -74,7 +73,7 @@ public class RecipeService {
     }
 
     public void updateRecipe(Integer id, Recipe update) {
-       //double check if we want some fields to be null or not?
+
         if (id == null) {
             throw new IllegalStateException("Id cannot be null");
         }else if (update == null ) {
@@ -113,9 +112,6 @@ public class RecipeService {
 
         List<Optional<Recipe>> recipes = new ArrayList<>();
 
-//        for (Ingredient ing: listOfIngredients) {
-//            Integer recipeId = ing.getRecipeId();
-//            recipes.add(databaseRepository.findById(recipeId));}
 
         listOfIngredients.stream().forEach(ingredient -> recipes.add(databaseRepository.findById(ingredient.getRecipeId())));
 

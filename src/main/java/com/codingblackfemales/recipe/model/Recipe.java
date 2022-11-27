@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "recipe")
 public class Recipe {
     @Id
@@ -20,7 +21,7 @@ public class Recipe {
             strategy = GenerationType.SEQUENCE, generator = "recipe_sequence"
     )
     @Column(
-            name = "recipe_id", updatable = false //no one can update it
+            name = "recipe_id", updatable = false
 
     )
     private Integer id;
