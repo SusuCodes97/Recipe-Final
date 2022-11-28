@@ -159,53 +159,14 @@ public class RecipeServiceTest {
 
 
     // UPDATE REQUEST
-    //try argument captor?
     @Test
     @DisplayName("This test checks if a recipe can be successfully updated")
     public void canUpdateRecipe() {
         given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
-//        ArgumentCaptor<Recipe> arg = ArgumentCaptor.forClass(Recipe.class);
+
         underTest.updateRecipe(1, recipe2);
-                verify(databaseRepository).save(any());
 
-//        verify(databaseRepository).save(arg.capture());
-
-//        Recipe savedRecipe = arg.getValue();
-
-
-
-
-
-
-//        verify(databaseRepository)
-//
-//        assertThat(underTest.updateRecipe(1, recipe2)).
-//        List<Ingredient> ingredients = new ArrayList<>();
-//        Ingredient ingredient2 = new Ingredient("chicken", 1.0);
-//        Ingredient ingredient1 = new Ingredient("chicken", 1.0);
-//        ingredients.add(ingredient1);
-//        ingredients.add(ingredient2);
-//
-//        Recipe recipe1 = new Recipe(1, "chicken shish", ingredients, "heat up", "chicken.come");
-//
-//        given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
-//
-//        Recipe recipe2 = new Recipe(2, "lamb", ingredients, "heat up", "chicken.come");
-//
-//        given(databaseRepository.save(recipe2)).willReturn(recipe2);
-//
-//        ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
-//        verify(databaseRepository).save(recipeArgumentCaptor.capture());
-//        Recipe actualRecipeSaved = recipeArgumentCaptor.getValue();
-//        assertEquals(recipe1, actualRecipeSaved);
-//        List<Recipe> expectedRecipeList = new ArrayList<>();
-//        expectedRecipeList.add(recipe1);
-//        expectedRecipeList.add(recipe2);
-//
-//        given(databaseRepository.findRecipeByName("chicken")).willReturn(expectedRecipeList);
-//        List<Recipe> actualRecipeList = underTest.getRecipeByName("chicken");
-//
-//        assertEquals(expectedRecipeList, actualRecipeList);
+        verify(databaseRepository).save(any());
     }
 
     @Test
@@ -265,11 +226,9 @@ public class RecipeServiceTest {
     }
 
     // DELETE REQUEST
-    //try argument captor?
     @Test
     @DisplayName("This test checks if a recipe can be deleted using a specified ID")
     public void canDeleteRecipe() {
-        //may get rid off
         List<Recipe> expectedRecipeList = List.of(recipe1, recipe2);
         given(databaseRepository.findById(1)).willReturn(Optional.of(recipe1));
 
@@ -290,41 +249,12 @@ public class RecipeServiceTest {
     }
 
     // GETBYINGREDIENTNAME REQUEST
-    //try argument captor
     @Test
     @DisplayName("This test checks if recipes can be retrieved based on ingredient name")
     public void canGetRecipeByIngredientName() {
         underTest.getRecipeByIngredientName("chicken");
 
         verify(databaseRepository, times(1)).findRecipeByIngredientName("chicken");
-
-//
-//        List<Recipe> expectedRecipeList = List.of(recipe1, recipe2);
-//
-//        given(databaseRepository.findAll()).willReturn(expectedRecipeList);
-//        given(databaseRepository.findRecipeByIngredientName("spice")).willReturn(ingredients);
-//        List<Optional<Recipe>> actualRecipeList = underTest.getRecipeByIngredientName("spice");
-//        assertEquals(expectedRecipeList, actualRecipeList);
-
-
-
-
-
-//
-
-//        Mockito.when(databaseRepository.findbyIngredientName("chicken")).thenReturn(ingredients); // <-- Add this line
-
-//        verify(databaseRepository, times(1)).save(any());
-//
-
-//         underTest.postRecipe(recipe1);
-//
-//        assertThat();
-
-//
-//        ArgumentCaptor<Recipe> recipeArgumentCaptor = ArgumentCaptor.forClass(Recipe.class);
-////        verify(databaseRepository).findRecipeByIngredientName("chicken");
-//        assertTrue(recipeArgumentCaptor.capture().getName().equals("chicken"));
     }
 
 }
